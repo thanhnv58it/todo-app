@@ -24,8 +24,13 @@ class AppTabbar: UITabBarController {
 
     private func setupTabbar() {
         let all = TodoListViewController(nibName: TodoListViewController.nibName, bundle: nil)
-        let completed = TodoListViewController(nibName: TodoListViewController.nibName, bundle: nil)
+        all.dataType = .all
+        
         let todo = TodoListViewController(nibName: TodoListViewController.nibName, bundle: nil)
+        todo.dataType = .todo
+
+        let completed = TodoListViewController(nibName: TodoListViewController.nibName, bundle: nil)
+        completed.dataType = .completed
 
         self.viewControllers = [all, todo, completed].map{$0.nestedInNavigation()}
         

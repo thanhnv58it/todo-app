@@ -10,8 +10,11 @@ import UIKit
 class AddItemViewController: UIViewController {
 
     @IBOutlet weak var tfTitle: UITextField!
+    @IBOutlet weak var lbTitleError: UILabel!
     @IBOutlet weak var tvDescription: UITextView!
     @IBOutlet weak var addButton: UIButton!
+    
+    var viewModel: AddItemViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,10 +29,13 @@ class AddItemViewController: UIViewController {
         buttonBar.tintColor = .white
         navigationItem.rightBarButtonItem = buttonBar
         
+        view.backgroundColor = UIColor.secondarySystemBackground
         addButton.layer.cornerRadius = 8
         tvDescription.layer.cornerRadius = 6
         tvDescription.backgroundColor = .black
         tfTitle.delegate = self
+        tfTitle.becomeFirstResponder()
+        lbTitleError.isHidden = true
         
         let doneAction = createDoneToolBar(selector: #selector(doneButtonAction))
         tfTitle.inputAccessoryView = doneAction
@@ -56,7 +62,15 @@ class AddItemViewController: UIViewController {
     }
 
     @IBAction func addButtonAction(_ sender: Any) {
-        
+        guard let title = tfTitle.text?.trimmingCharacters(in: .whitespacesAndNewlines), !title.isEmpty else {
+            UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut) {
+                self.lbTitleError.isHidden = false
+            }
+            return
+        }
+        view.endEditing(true)
+        viewModel.addNewItem(title: title, description: tvDescription.text)
+        rightBarButtonAction()
     }
     
     @objc func doneButtonAction() {
@@ -69,5 +83,14 @@ extension AddItemViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         tvDescription.becomeFirstResponder()
         return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        guard !lbTitleError.isHidden else {
+            return
+        }
+        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut) {
+            self.lbTitleError.isHidden = true
+        }
     }
 }

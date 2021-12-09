@@ -6,20 +6,50 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class TodoListViewController: UIViewController {
+    
+    enum DataType {
+        case all
+        case todo
+        case completed
+        
+        var title: String {
+            switch self {
+            case .all:
+                return "All Items"
+            case .todo:
+                return "Todo Items"
+            case .completed:
+                return "Completed Items"
+            }
+        }
+    }
 
     @IBOutlet weak var tableView: UITableView!
+    
+    private let disposeBag = DisposeBag()
+    
+    private let viewModel = TodoListViewModel()
+    var dataType: DataType!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupUI()
-        setupTableView()
+        bindTodoData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        viewModel.getTodoItems(dataType)
     }
     
     private func setupUI() {
-        navigationItem.title = "All Items"
+        navigationItem.title = dataType.title
         
         let buttonBar = UIBarButtonItem(image: UIImage(systemName: "plus.circle"), style: .plain, target: self, action: #selector(rightBarButtonAction))
         buttonBar.tintColor = .white
@@ -28,33 +58,41 @@ class TodoListViewController: UIViewController {
 
     @objc func rightBarButtonAction() {
         let add = AddItemViewController(nibName: AddItemViewController.nibName, bundle: nil)
+        add.viewModel = AddItemViewModel()
         let navigation = UINavigationController(rootViewController: add)
-        navigationController?.present(navigation, animated: true, completion: nil)
+        navigation.modalPresentationStyle = .fullScreen
+        present(navigation, animated: true, completion: nil)
     }
 
     @objc func markAsDoneAction(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-        sender.tintColor = sender.isSelected ? .green : .white
+        let current = viewModel.relayTodoItems.value[sender.tag]
+        viewModel.markAsDone(input: current)
+        viewModel.getTodoItems(dataType)
     }
 
 }
 
-extension TodoListViewController: UITableViewDataSource, UITableViewDelegate {
+extension TodoListViewController {
     
-    fileprivate func setupTableView() {
-        tableView.delegate = self
-        tableView.dataSource = self
+    fileprivate func bindTodoData() {
+        viewModel.relayTodoItems.bind(to: tableView.rx.items) { [weak self] (tableView, index, element) in
+            let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "defaultCell")
+            cell.textLabel?.text = element.title
+            cell.detailTextLabel?.text = element.des
+            cell.textLabel?.numberOfLines = 0
+            cell.detailTextLabel?.numberOfLines = 0
+            cell.selectionStyle = .none
+            cell.accessoryView = self?.checkMarkButton(isSelected: element.isDone, index: index)
+            return cell
+        }.disposed(by: disposeBag)
     }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
-    }
-    
+                                      
     private func checkMarkButton(isSelected: Bool, index: Int) -> UIButton {
         let button = UIButton(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 44, height: 44)))
         button.setImage(UIImage(named: "check-normal"), for: .normal)
         button.setImage(UIImage(named: "check-selected"), for: .selected)
         button.tintColor = isSelected ? .green : .white
+        button.isSelected = isSelected
         button.imageView?.contentMode = .scaleAspectFit
         button.imageEdgeInsets = UIEdgeInsets.init(top: 10, left: 10, bottom: 10, right: 10)
         button.removeTarget(self, action: nil, for: .touchUpInside)
@@ -62,16 +100,4 @@ extension TodoListViewController: UITableViewDataSource, UITableViewDelegate {
         button.addTarget(self, action: #selector(markAsDoneAction), for: .touchUpInside)
         return button
     }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "defaultCell")
-        cell.textLabel?.text = "Title"
-        cell.detailTextLabel?.text = "Description DescriptionDescriptionDescriptionD escriptionDescrip tionDescriptionDescriptionDes criptionDescription"
-        cell.textLabel?.numberOfLines = 0
-        cell.detailTextLabel?.numberOfLines = 0
-        cell.selectionStyle = .none
-        cell.accessoryView = checkMarkButton(isSelected: false, index: indexPath.row)
-        return cell
-    }
-
 }
