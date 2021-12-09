@@ -16,28 +16,30 @@ class TodoListViewModelTests: TestCaseBase {
     override func setUp() {
         super.setUp()
         
-        initData = [ TodoModel(title: "First", description: "First description"),
-                        TodoModel(title: "Second", description: "Second description"),
-                        TodoModel(title: "Third", description: "Third description")]
+        initData = [
+            TodoModel(title: "First", description: "First description"),
+            TodoModel(title: "Second", description: "Second description"),
+            TodoModel(title: "Third", description: "Third description")
+        ]
         initData.last?.isDone = true
         initData.forEach{_ = LocalData.shared.add(data: $0)}
     }
     
     func testGetAllItems() throws {
         viewModel.getTodoItems(.all)
-        
+        XCTAssertEqual(viewModel.relayTodoItems.value.last?.title, initData.first?.title)
         XCTAssertEqual(viewModel.relayTodoItems.value.count, initData.count)
     }
     
     func testGetTodoItems() throws {
         viewModel.getTodoItems(.todo)
-        
+        XCTAssertEqual(viewModel.relayTodoItems.value.last?.title, initData.filter{!$0.isDone}.first?.title)
         XCTAssertEqual(viewModel.relayTodoItems.value.count, initData.filter{!$0.isDone}.count)
     }
     
     func testGetCompletedItems() throws {
         viewModel.getTodoItems(.completed)
-        
+        XCTAssertEqual(viewModel.relayTodoItems.value.last?.title, initData.filter{$0.isDone}.first?.title)
         XCTAssertEqual(viewModel.relayTodoItems.value.count, initData.filter{$0.isDone}.count)
     }
     
