@@ -1,0 +1,12 @@
+"tab_all" = "All";
+"tab_todo" = "Todo";
+"tab_completed" = "Completed";
+
+"screen_all" = "All Items";
+"screen_todo" = "Todo Items";
+"screen_completed" = "Completed Items";
+"screen_add" = "Add New Item";
+
+"button_done" = "Done";
+"button_ok" = "OK";
+"alert_error" = "Error!";

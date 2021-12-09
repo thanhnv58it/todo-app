@@ -15,6 +15,8 @@
 		DA4146F32762272D008CF49B /* TodoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4146F22762272D008CF49B /* TodoModel.swift */; };
 		DA4146F627622FE0008CF49B /* LocalData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4146F527622FE0008CF49B /* LocalData.swift */; };
 		DA4146F827623758008CF49B /* TodoListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4146F727623758008CF49B /* TodoListViewModel.swift */; };
+		DA4146FC276259B3008CF49B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DA4146FE276259B3008CF49B /* Localizable.strings */; };
+		DA41470027625A8C008CF49B /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4146FF27625A8C008CF49B /* String+Ext.swift */; };
 		DADC4F082761FE3F0043EB17 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADC4F072761FE3F0043EB17 /* AppDelegate.swift */; };
 		DADC4F0C2761FE3F0043EB17 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADC4F0B2761FE3F0043EB17 /* ViewController.swift */; };
 		DADC4F0F2761FE3F0043EB17 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DADC4F0D2761FE3F0043EB17 /* Main.storyboard */; };
@@ -51,6 +53,8 @@
 		DA4146F22762272D008CF49B /* TodoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoModel.swift; sourceTree = "<group>"; };
 		DA4146F527622FE0008CF49B /* LocalData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalData.swift; sourceTree = "<group>"; };
 		DA4146F727623758008CF49B /* TodoListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViewModel.swift; sourceTree = "<group>"; };
+		DA4146FD276259B3008CF49B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		DA4146FF27625A8C008CF49B /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		DADC4F042761FE3F0043EB17 /* Todo App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Todo App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DADC4F072761FE3F0043EB17 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DADC4F0B2761FE3F0043EB17 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -149,6 +153,14 @@
 			path = Service;
 			sourceTree = "<group>";
 		};
+		DA4146F92762591C008CF49B /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				DA4146FE276259B3008CF49B /* Localizable.strings */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
 		DADC4EFB2761FE3F0043EB17 = {
 			isa = PBXGroup;
 			children = (
@@ -172,6 +184,7 @@
 		DADC4F062761FE3F0043EB17 /* Todo App */ = {
 			isa = PBXGroup;
 			children = (
+				DA4146F92762591C008CF49B /* Resource */,
 				DA4146F427622FC3008CF49B /* Service */,
 				DA4146F12762271B008CF49B /* Model */,
 				DADC4F3D276203380043EB17 /* Common */,
@@ -217,6 +230,7 @@
 			isa = PBXGroup;
 			children = (
 				DADC4F3E2762034F0043EB17 /* Nibable.swift */,
+				DA4146FF27625A8C008CF49B /* String+Ext.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -318,6 +332,7 @@
 				DADC4F142761FE400043EB17 /* LaunchScreen.storyboard in Resources */,
 				DA4146EC27620C3A008CF49B /* AddItemViewController.xib in Resources */,
 				DADC4F44276204D00043EB17 /* TodoListViewController.xib in Resources */,
+				DA4146FC276259B3008CF49B /* Localizable.strings in Resources */,
 				DADC4F112761FE400043EB17 /* Assets.xcassets in Resources */,
 				DADC4F0F2761FE3F0043EB17 /* Main.storyboard in Resources */,
 				DADC4F3C2762032B0043EB17 /* AppTabbar.xib in Resources */,
@@ -412,6 +427,7 @@
 				DA4146F027622517008CF49B /* AddItemViewModel.swift in Sources */,
 				DADC4F43276204D00043EB17 /* TodoListViewController.swift in Sources */,
 				DA4146EB27620C3A008CF49B /* AddItemViewController.swift in Sources */,
+				DA41470027625A8C008CF49B /* String+Ext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -434,6 +450,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		DA4146FE276259B3008CF49B /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DA4146FD276259B3008CF49B /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		DADC4F0D2761FE3F0043EB17 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

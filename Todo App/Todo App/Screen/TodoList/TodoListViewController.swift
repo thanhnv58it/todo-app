@@ -19,11 +19,11 @@ class TodoListViewController: UIViewController {
         var title: String {
             switch self {
             case .all:
-                return "All Items"
+                return "screen_all".localized()
             case .todo:
-                return "Todo Items"
+                return "screen_todo".localized()
             case .completed:
-                return "Completed Items"
+                return "screen_completed".localized()
             }
         }
     }
@@ -33,12 +33,14 @@ class TodoListViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private let viewModel = TodoListViewModel()
+    
     var dataType: DataType!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupUI()
+        bindErrorData()
         bindTodoData()
     }
     
@@ -58,7 +60,6 @@ class TodoListViewController: UIViewController {
 
     @objc func rightBarButtonAction() {
         let add = AddItemViewController(nibName: AddItemViewController.nibName, bundle: nil)
-        add.viewModel = AddItemViewModel()
         let navigation = UINavigationController(rootViewController: add)
         navigation.modalPresentationStyle = .fullScreen
         present(navigation, animated: true, completion: nil)
@@ -66,13 +67,22 @@ class TodoListViewController: UIViewController {
 
     @objc func markAsDoneAction(_ sender: UIButton) {
         let current = viewModel.relayTodoItems.value[sender.tag]
-        viewModel.markAsDone(input: current)
+        viewModel.updateMarkedAsDone(input: current)
         viewModel.getTodoItems(dataType)
     }
 
 }
 
 extension TodoListViewController {
+    
+    fileprivate func bindErrorData() {
+        viewModel.errorObservable.bind { [weak self] (message) in
+            guard let message = message else {
+                return
+            }
+            self?.showErrorAlert(message: message)
+        }.disposed(by: disposeBag)
+    }
     
     fileprivate func bindTodoData() {
         viewModel.relayTodoItems.bind(to: tableView.rx.items) { [weak self] (tableView, index, element) in

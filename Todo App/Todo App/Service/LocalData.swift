@@ -13,33 +13,29 @@ class LocalData {
     
     static let shared = LocalData()
     
-    func add<T: Object>(data: T) {
-        let realm = try! Realm()
-        try! realm.write {
-            realm.add(data)
-        }
-        
-    }
-    
-    func update<T: Object>(data: T) {
-        let realm = try! Realm()
-        try! realm.write {
-            realm.add(data, update: .modified)
-        }
-        
-    }
-    
-    func update(write: () -> Void) {
-        let realm = try! Realm()
-        try! realm.write {
-            write()
+    func add<T: Object>(data: T) -> Error? {
+        do {
+            let realm = try Realm()
+            try realm.write {
+                realm.add(data)
+            }
+            return nil
+        } catch {
+            return error
         }
     }
     
-    func getAll<T: Object>(type: T.Type) -> Results<T> {
-        let realm = try! Realm()
-        let result = realm.objects(T.self)
-        return result
+    func update(write: () -> Void) -> Error? {
+        do {
+            let realm = try Realm()
+            try realm.write {
+                write()
+            }
+            return nil
+            
+        } catch {
+            return error
+        }
     }
     
     func getAll<T: Object>(type: T.Type, query: NSPredicate? = nil) -> Results<T> {

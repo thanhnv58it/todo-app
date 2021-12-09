@@ -35,15 +35,15 @@ class AppTabbar: UITabBarController {
         self.viewControllers = [all, todo, completed].map{$0.nestedInNavigation()}
         
         let allTab = tabBar.items![0]
-        allTab.title = "All"
+        allTab.title = "tab_all".localized()
         allTab.image = UIImage(systemName: "doc.text.magnifyingglass")
 
         let todoTab = tabBar.items![1]
-        todoTab.title = "Todo"
+        todoTab.title = "tab_todo".localized()
         todoTab.image = UIImage(systemName: "doc.text.viewfinder")
         
         let completedTab = tabBar.items![2]
-        completedTab.title = "Completed"
+        completedTab.title = "tab_completed".localized()
         completedTab.image = UIImage(systemName: "hand.thumbsup")
     }
 
@@ -54,5 +54,13 @@ extension UIViewController {
         let navigation = UINavigationController(rootViewController: self)
         navigation.navigationBar.prefersLargeTitles = true
         return navigation
+    }
+    
+    func showErrorAlert(message: String) {
+        let alert = UIAlertController(title: "alert_error".localized(), message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "button_ok".localized(), style: .default, handler: nil))
+        DispatchQueue.main.async {
+            self.present(alert, animated: true, completion: nil)
+        }
     }
 }

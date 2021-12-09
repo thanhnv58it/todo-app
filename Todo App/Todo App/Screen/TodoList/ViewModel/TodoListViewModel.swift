@@ -14,7 +14,8 @@ class TodoListViewModel {
     typealias DataType = TodoListViewController.DataType
     
     let relayTodoItems: BehaviorRelay<[TodoModel]> = BehaviorRelay(value: [])
-    
+    let errorObservable = PublishSubject<String?>()
+
     func getQuery(type: DataType) -> NSPredicate? {
         switch type {
         case .all:
@@ -32,9 +33,10 @@ class TodoListViewModel {
         relayTodoItems.accept(Array(items).reversed())
     }
     
-    func markAsDone(input: TodoModel) {
-        LocalData.shared.update {
+    func updateMarkedAsDone(input: TodoModel) {
+        let error = LocalData.shared.update {
             input.isDone = !input.isDone
         }
+        errorObservable.onNext(error?.localizedDescription)
     }
 }

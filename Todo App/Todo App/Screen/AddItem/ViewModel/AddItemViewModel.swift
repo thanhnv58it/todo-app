@@ -6,23 +6,19 @@
 //
 
 import Foundation
+import RxSwift
 
 class AddItemViewModel {
     
-    var todoItem: TodoModel?
-    
-    init(_ input: TodoModel? = nil) {
-        self.todoItem = input
-    }
-    
+    let errorObservable = PublishSubject<String?>()
+    let savingStatusObservable = PublishSubject<Bool>()
+
     func addNewItem(title: String, description: String?) {
-        if let current = todoItem {
-            current.title = title
-            current.des = description ?? ""
-            LocalData.shared.update(data: current)
+        let item = TodoModel(title: title, description: description ?? "")
+        if let error = LocalData.shared.add(data: item) {
+            errorObservable.onNext(error.localizedDescription)
         } else {
-            let item = TodoModel(title: title, description: description ?? "")
-            LocalData.shared.add(data: item)
+            savingStatusObservable.onNext(true)
         }
     }
 }
