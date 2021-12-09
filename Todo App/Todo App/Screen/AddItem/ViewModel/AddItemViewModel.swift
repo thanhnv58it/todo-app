@@ -17,6 +17,7 @@ class AddItemViewModel {
         let item = TodoModel(title: title, description: description ?? "")
         if let error = LocalData.shared.add(data: item) {
             errorObservable.onNext(error.localizedDescription)
+            savingStatusObservable.onNext(false)
         } else {
             savingStatusObservable.onNext(true)
         }
