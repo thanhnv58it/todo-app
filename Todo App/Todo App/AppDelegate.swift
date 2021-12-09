@@ -15,8 +15,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        let vc = ViewController()
-        self.window?.rootViewController = UINavigationController(rootViewController: vc)
+        let tabbar = AppTabbar(nibName: AppTabbar.nibName, bundle: nil)
+        self.window?.rootViewController = tabbar
         self.window?.overrideUserInterfaceStyle = .dark
         self.window?.makeKeyAndVisible()
         
